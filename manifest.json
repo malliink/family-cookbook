@@ -1,0 +1,9 @@
+{
+  "name": "Семейная кулинарная книга",
+  "short_name": "Моя книга",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f4ead8",
+  "theme_color": "#efe4cf",
+  "icons": []
+}
