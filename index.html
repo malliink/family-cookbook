@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#efe4cf">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Моя книга">
+<link rel="manifest" href="manifest.json">
+<title>Семейная кулинарная книга</title>
+<style>
+:root{--paper:#f4ead8;--paper2:#fbf6eb;--ink:#4e3929;--muted:#8b725c;--line:#d7c3a5;--accent:#8b573b;--sage:#77806a;--shadow:0 8px 25px #513b2517}
+*{box-sizing:border-box}body{margin:0;background:var(--paper);color:var(--ink);font-family:Georgia,'Times New Roman',serif;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;opacity:.17;background-image:radial-gradient(#8e6e4c .6px,transparent .7px);background-size:7px 7px}
+button,input,textarea,select{font:inherit;color:inherit}button{cursor:pointer}
+.app{max-width:760px;margin:auto;padding:env(safe-area-inset-top) 17px calc(28px + env(safe-area-inset-bottom))}
+header{text-align:center;padding:28px 8px 18px;border-bottom:1px solid var(--line);position:relative}
+.eyebrow{font:10px Arial,sans-serif;letter-spacing:3px;text-transform:uppercase;color:var(--muted)}
+h1{font-size:clamp(29px,8vw,42px);font-weight:normal;line-height:1.06;margin:10px 0 7px}
+.subtitle{font-style:italic;color:var(--muted);font-size:15px}
+.flourish{color:#a17b55;font-size:22px;margin-top:8px}
+.toolbar{display:flex;gap:9px;margin:18px 0 13px}
+.search{flex:1;min-width:0;background:var(--paper2);border:1px solid var(--line);border-radius:9px;padding:12px 13px;font-size:15px;outline:none}
+.add{background:var(--accent);color:#fff8ec;border:0;border-radius:9px;padding:0 15px;font:13px Arial,sans-serif;letter-spacing:.3px}
+.tabs{display:flex;gap:7px;overflow:auto;padding:2px 0 12px;scrollbar-width:none}.tabs button{white-space:nowrap;border:1px solid var(--line);background:#f8f0e2;border-radius:20px;padding:8px 13px;font:12px Arial,sans-serif;color:var(--muted)}
+.tabs button.active{background:#6f604e;color:#fff8ec;border-color:#6f604e}
+.sectionhead{display:flex;justify-content:space-between;align-items:baseline;margin:8px 2px 12px}.sectionhead h2{font-size:22px;font-weight:normal;margin:0}.count{font:11px Arial,sans-serif;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
+.recipe{background:var(--paper2);border:1px solid var(--line);border-radius:8px;overflow:hidden;box-shadow:var(--shadow);position:relative}
+.photo{height:126px;background:linear-gradient(135deg,#e8dcc5,#d8c4a5);display:flex;align-items:center;justify-content:center;color:#92795d;font-size:34px;background-size:cover;background-position:center}
+.recipebody{padding:11px 12px 13px}.category{font:9px Arial,sans-serif;letter-spacing:1.5px;text-transform:uppercase;color:var(--sage)}
+.recipe h3{font-size:18px;font-weight:normal;line-height:1.15;margin:6px 0 7px}.meta{font:11px Arial,sans-serif;color:var(--muted)}
+.fav{position:absolute;right:8px;top:8px;border:0;border-radius:50%;width:30px;height:30px;background:#fbf6ebdd;font-size:17px;color:var(--accent)}
+.empty{grid-column:1/-1;text-align:center;padding:42px 20px;border:1px dashed var(--line);border-radius:10px;color:var(--muted);line-height:1.6}.empty b{display:block;font-size:21px;font-weight:normal;color:var(--ink);margin-bottom:6px}
+footer{text-align:center;color:#9b836a;font-style:italic;font-size:13px;padding:30px 0 12px}
+.overlay{position:fixed;inset:0;background:#241a13a8;display:none;align-items:flex-end;justify-content:center;z-index:5;padding:0}.overlay.show{display:flex}
+.sheet{background:var(--paper2);width:100%;max-width:760px;max-height:94vh;overflow:auto;border-radius:18px 18px 0 0;padding:21px 18px calc(24px + env(safe-area-inset-bottom));box-shadow:0 -8px 35px #0003}
+.sheettop{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding-bottom:12px;margin-bottom:15px}.sheet h2{font-weight:normal;font-size:25px;margin:0}.close{border:1px solid var(--line);background:transparent;border-radius:50%;width:34px;height:34px;font-size:20px}
+label{display:block;font:11px Arial,sans-serif;letter-spacing:.7px;text-transform:uppercase;color:var(--muted);margin:13px 0 6px}
+input.field,textarea.field,select.field{width:100%;border:1px solid var(--line);border-radius:7px;background:#fffaf1;padding:11px;font-size:15px;outline:none}
+textarea.field{min-height:100px;resize:vertical;line-height:1.5}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.actions{display:flex;gap:9px;margin-top:18px}.primary,.secondary,.danger{border:0;border-radius:8px;padding:12px 15px;font:13px Arial,sans-serif}.primary{background:var(--accent);color:white;flex:1}.secondary{background:#e9deca}.danger{background:#f0dfd8;color:#873f30}
+.detailphoto{width:100%;max-height:230px;object-fit:cover;border-radius:8px;margin:5px 0 14px}.detail h2{font-size:30px;font-weight:normal;margin:4px 0 8px}.detail h3{font-size:20px;font-weight:normal;border-bottom:1px solid var(--line);padding-bottom:6px;margin:22px 0 9px}.detail p{white-space:pre-wrap;line-height:1.65;margin:0;font-size:16px}
+@media(min-width:600px){.app{padding-left:25px;padding-right:25px}.photo{height:160px}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.overlay{align-items:center;padding:20px}.sheet{border-radius:16px;max-height:88vh}}
+</style>
+</head>
+<body>
+<div class="app">
+<header>
+ <div class="eyebrow">собрано с любовью · с 2026 года</div>
+ <h1>Семейная<br>кулинарная книга</h1>
+ <div class="subtitle">Рецепты, которые хочется сохранить</div>
+ <div class="flourish">❧ ✦ ❧</div>
+</header>
+<div class="toolbar"><input id="search" class="search" placeholder="Найти рецепт..." aria-label="Поиск рецептов"><button class="add" id="addBtn">＋ Добавить</button></div>
+<nav class="tabs" id="tabs"></nav>
+<div class="sectionhead"><h2 id="sectionTitle">Все рецепты</h2><span class="count" id="count"></span></div>
+<div class="grid" id="recipes"></div>
+<footer>«Хорошая еда — это память, которую можно попробовать»</footer>
+</div>
+<div class="overlay" id="overlay"><div class="sheet" id="sheet"></div></div>
+<script>
+const categories=['Все рецепты','Избранное','Завтраки','Супы','Основные блюда','Гарниры','Салаты','Выпечка','Десерты','Напитки','Другое'];
+const key='familyCookbookRecipes_v1';let recipes=JSON.parse(localStorage.getItem(key)||'[]');let active='Все рецепты',editing=null;
+const $=id=>document.getElementById(id);
+function save(){localStorage.setItem(key,JSON.stringify(recipes));render()}
+function esc(s=''){return String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]))}
+function renderTabs(){$('tabs').innerHTML=categories.map(c=>`<button class="${active===c?'active':''}" data-cat="${esc(c)}">${esc(c)}</button>`).join('');$('tabs').querySelectorAll('button').forEach(b=>b.onclick=()=>{active=b.dataset.cat;render()})}
+function render(){renderTabs();$('sectionTitle').textContent=active;$('search').value=$('search').value;let q=$('search').value.toLowerCase();let list=recipes.filter(r=>(active==='Все рецепты'||(active==='Избранное'?r.favorite:r.category===active))&&(r.title+' '+r.ingredients+' '+r.notes).toLowerCase().includes(q));$('count').textContent=list.length+' '+word(list.length);$('recipes').innerHTML=list.length?list.map(r=>`<article class="recipe" data-id="${r.id}"><button class="fav" data-fav="${r.id}" aria-label="В избранное">${r.favorite?'♥':'♡'}</button><div class="photo" style="${r.photo?'background-image:url('+r.photo+')':''}">${r.photo?'':'✿'}</div><div class="recipebody"><div class="category">${esc(r.category||'Другое')}</div><h3>${esc(r.title)}</h3><div class="meta">${r.time?esc(r.time)+' · ':''}${r.servings?esc(r.servings)+' порц.':''}</div></div></article>`).join(''):`<div class="empty"><b>${q?'Ничего не найдено':'Пока здесь пусто'}</b>${q?'Попробуй изменить запрос.':'Добавь первый рецепт — пусть эта книга начнёт свою историю.'}</div>`;$('recipes').querySelectorAll('.recipe').forEach(el=>el.onclick=()=>detail(el.dataset.id));$('recipes').querySelectorAll('[data-fav]').forEach(b=>b.onclick=e=>{e.stopPropagation();let r=recipes.find(x=>x.id===b.dataset.fav);r.favorite=!r.favorite;save()})}
+function word(n){return n===1?'рецепт':n>=2&&n<=4?'рецепта':'рецептов'}
+$('search').addEventListener('input',render);$('addBtn').onclick=()=>form();
+function show(content){$('sheet').innerHTML=content;$('overlay').classList.add('show');$('overlay').scrollTop=0}
+function hide(){$('overlay').classList.remove('show');editing=null}
+$('overlay').addEventListener('click',e=>{if(e.target===$('overlay'))hide()});
+function form(id=null){editing=id;let r=id?recipes.find(x=>x.id===id):{title:'',category:'Основные блюда',time:'',servings:'',ingredients:'',steps:'',notes:'',photo:'',favorite:false};show(`<div class="sheettop"><h2>${id?'Изменить рецепт':'Новый рецепт'}</h2><button class="close" id="close">×</button></div><form id="recipeForm">
+<label>Название блюда *</label><input class="field" name="title" required maxlength="90" placeholder="Например, картошка по-французски" value="${esc(r.title)}">
+<div class="two"><div><label>Категория</label><select class="field" name="category">${categories.slice(2).map(c=>`<option ${r.category===c?'selected':''}>${c}</option>`).join('')}</select></div><div><label>Время</label><input class="field" name="time" placeholder="45 минут" value="${esc(r.time)}"></div></div>
+<div class="two"><div><label>Количество порций</label><input class="field" name="servings" placeholder="4" value="${esc(r.servings)}"></div><div><label>Фотография блюда</label><input class="field" name="photo" type="file" accept="image/*"></div></div>
+<label>Ингредиенты и количество</label><textarea class="field" name="ingredients" placeholder="Картофель — 5 шт.&#10;Курица — 400 г&#10;Сыр — 150 г">${esc(r.ingredients)}</textarea>
+<label>Приготовление по шагам</label><textarea class="field" name="steps" placeholder="1. Подготовить ингредиенты...&#10;2. Выложить слоями...&#10;3. Запекать до готовности...">${esc(r.steps)}</textarea>
+<label>Мои заметки</label><textarea class="field" name="notes" placeholder="Что получилось, что изменить в следующий раз...">${esc(r.notes)}</textarea>
+<div class="actions"><button class="primary" type="submit">Сохранить рецепт</button>${id?'<button class="danger" type="button" id="delete">Удалить</button>':''}</div></form>`);
+$('close').onclick=hide;
+$('recipeForm').onsubmit=async e=>{e.preventDefault();let f=e.target;let old=id?recipes.find(x=>x.id===id):{};let photo=old.photo||'';let file=f.photo.files[0];if(file){photo=await new Promise(resolve=>{let rd=new FileReader();rd.onload=()=>resolve(rd.result);rd.readAsDataURL(file)})}
+let data={id:id||String(Date.now()),title:f.title.value.trim(),category:f.category.value,time:f.time.value.trim(),servings:f.servings.value.trim(),ingredients:f.ingredients.value.trim(),steps:f.steps.value.trim(),notes:f.notes.value.trim(),photo,favorite:!!old.favorite};if(id)recipes=recipes.map(x=>x.id===id?data:x);else recipes.unshift(data);hide();save()};
+if(id)$('delete').onclick=()=>{if(confirm('Удалить этот рецепт?')){recipes=recipes.filter(x=>x.id!==id);hide();save()}};
+}
+function detail(id){let r=recipes.find(x=>x.id===id);if(!r)return;show(`<div class="sheettop"><span class="eyebrow">${esc(r.category)}</span><button class="close" id="close">×</button></div><div class="detail">${r.photo?`<img class="detailphoto" src="${r.photo}">`:''}<h2>${esc(r.title)}</h2><div class="meta">${r.time?'Время: '+esc(r.time):''}${r.servings?' · Порций: '+esc(r.servings):''}</div><h3>Ингредиенты</h3><p>${esc(r.ingredients||'Пока не добавлены')}</p><h3>Приготовление</h3><p>${esc(r.steps||'Пока не добавлено')}</p>${r.notes?`<h3>Мои заметки</h3><p>${esc(r.notes)}</p>`:''}</div><div class="actions"><button class="primary" id="edit">Редактировать</button><button class="secondary" id="heart">${r.favorite?'♥ В избранном':'♡ В избранное'}</button></div>`);$('close').onclick=hide;$('edit').onclick=()=>form(id);$('heart').onclick=()=>{r.favorite=!r.favorite;detail(id);render()}}
+render();
+if('serviceWorker' in navigator && location.protocol.startsWith('http'))navigator.serviceWorker.register('./sw.js').catch(()=>{});
+</script>
+</body></html>
